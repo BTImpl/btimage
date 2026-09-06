@@ -1,0 +1,31 @@
+name: Galéria frissítése
+
+# 30 percenként lefut, és kézzel is elindítható.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # kell a commit + push-hoz
+
+jobs:
+  update-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Új posztok lekérése és galéria frissítése
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: bash scripts/update-gallery.sh
+
+      - name: Változások commitolása és push-olása
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/gallery.json images/ index.html
+          git diff --cached --quiet || git commit -m "Galéria automatikus frissítése"
+          git push
