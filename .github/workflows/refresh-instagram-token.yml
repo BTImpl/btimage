@@ -1,0 +1,37 @@
+name: Instagram token megújítása
+
+# Havonta egyszer lefut, jóval a 60 napos lejárat előtt.
+# Kézzel is elindítható a GitHub "Actions" fülön (workflow_dispatch).
+on:
+  schedule:
+    - cron: '0 3 1 * *'   # minden hónap 1-jén, 03:00 UTC-kor
+  workflow_dispatch: {}
+
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Új hosszú élettartamú token lekérése és mentése
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+          CURRENT_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          RESPONSE=$(curl -s "https://graph.facebook.com/v26.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${FB_APP_ID}&client_secret=${FB_APP_SECRET}&fb_exchange_token=${CURRENT_TOKEN}")
+
+          NEW_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token // empty')
+
+          if [ -z "$NEW_TOKEN" ]; then
+            echo "::error::Nem sikerült új tokent szerezni. Válasz: $RESPONSE"
+            exit 1
+          fi
+
+          # Ne kerüljön a logba a token értéke
+          echo "::add-mask::$NEW_TOKEN"
+
+          echo -n "$NEW_TOKEN" | gh secret set IG_ACCESS_TOKEN --repo "${{ github.repository }}"
+
+          echo "A token sikeresen megújítva és elmentve."
