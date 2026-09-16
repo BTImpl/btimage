@@ -47,23 +47,5 @@ echo "$RESPONSE" | jq -c '.data[]? | select(.media_type == "IMAGE")' | while rea
   echo "Új poszt hozzáadva: $ID"
 done
 
-# index.html újragenerálása a manifest teljes tartalmából, legújabb elöl.
-{
-  echo "<!DOCTYPE html>"
-  echo "<html lang=\"hu\"><head><meta charset=\"utf-8\">"
-  echo "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-  echo "<title>BT Image galéria</title>"
-  echo "<style>"
-  echo "body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem;background:#111;color:#eee}"
-  echo ".post{margin-bottom:2.5rem}"
-  echo "img{max-width:100%;border-radius:8px;display:block;margin-bottom:0.75rem}"
-  echo "a{color:#8ab4f8}"
-  echo "</style></head><body>"
-  echo "<h1>BT Image galéria</h1>"
-  jq -r 'sort_by(.timestamp) | reverse | .[] |
-    "<div class=\"post\"><img src=\"\(.image)\" alt=\"\"><p>\(.caption)</p><a href=\"\(.permalink)\">Megnézem Instagramon</a></div>"' \
-    "$MANIFEST"
-  echo "</body></html>"
-} > index.html
-
-echo "Galéria oldal újragenerálva."
+# Az index.html statikus sablon, ami böngészőben tölti be a $MANIFEST
+# tartalmát, ezért itt nincs szükség újragenerálásra.

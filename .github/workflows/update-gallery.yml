@@ -26,6 +26,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/gallery.json images/ index.html
+          git add data/gallery.json images/
           git diff --cached --quiet || git commit -m "Galéria automatikus frissítése"
           git push

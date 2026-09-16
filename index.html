@@ -2,15 +2,256 @@
 <html lang="hu"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BT Image galéria</title>
+<meta name="description" content="Bódis Tamás — BT Image fotógaléria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem;background:#111;color:#eee}
-.post{margin-bottom:2.5rem}
-img{max-width:100%;border-radius:8px;display:block;margin-bottom:0.75rem}
-a{color:#8ab4f8}
+:root{
+  --ink:#0A1228;
+  --deep:#060C1B;
+  --surface:#0D1530;
+  --mist:#9AA6C9;
+  --soft:#C7D0E8;
+  --white:#F4F7FF;
+  --border:#1E2A47;
+  --indigo:#5A6CF7;
+  --royal-blue:#4577F0;
+  --azure:#3D93E8;
+  --cyan:#58CBFB;
+  --signature:linear-gradient(135deg, #5A6CF7 0%, #4577F0 42%, #58CBFB 100%);
+  --font-display:"Poppins", sans-serif;
+  --font-body:"IBM Plex Sans", system-ui, sans-serif;
+  --font-code:"JetBrains Mono", monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--deep);
+  color:var(--white);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+
+header{padding:4rem 0 2.5rem;text-align:center}
+.brand{display:inline-flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.mark{
+  width:2.5rem;height:2.5rem;border-radius:22%;
+  background:var(--signature);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(90,108,247,.35);
+  flex-shrink:0;
+}
+.mark svg{width:1.3rem;height:1.3rem;stroke:#0A1228;fill:none;stroke-width:2}
+.brand-name{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1.4rem;
+  letter-spacing:-.01em;
+}
+.brand-name .accent{
+  background:var(--signature);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+h1{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  letter-spacing:-.02em;
+  margin:0 0 .6rem;
+}
+.tagline{
+  color:var(--mist);
+  font-size:1rem;
+  max-width:36rem;
+  margin:0 auto;
+  line-height:1.6;
+}
+
+main{padding-bottom:4rem}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1.5rem;
+}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(90,108,247,.45);
+  box-shadow:0 20px 40px -16px rgba(90,108,247,.35);
+}
+.card .thumb{
+  aspect-ratio:4/5;
+  width:100%;
+  overflow:hidden;
+  background:var(--ink);
+}
+.card .thumb img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .5s ease;
+}
+.card:hover .thumb img{transform:scale(1.05)}
+
+.card-body{
+  padding:1.1rem 1.2rem 1.3rem;
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+  flex:1;
+}
+.caption{
+  margin:0;
+  color:var(--soft);
+  font-size:.92rem;
+  line-height:1.55;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+}
+.caption .tag{
+  color:var(--cyan);
+  font-weight:500;
+}
+.card-footer{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+}
+time{
+  font-family:var(--font-code);
+  font-size:.75rem;
+  color:var(--mist);
+  letter-spacing:.02em;
+}
+.ig-link{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.4rem .85rem;
+  border-radius:50rem;
+  border:1px solid var(--border);
+  color:var(--white);
+  font-size:.82rem;
+  font-weight:500;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:border-color .2s ease, background .2s ease;
+}
+.ig-link svg{width:.95rem;height:.95rem;flex-shrink:0}
+.ig-link:hover{
+  border-color:transparent;
+  background:var(--signature);
+  color:#0A1228;
+}
+
+footer{
+  padding:2.5rem 0 3rem;
+  text-align:center;
+  border-top:1px solid var(--border);
+}
+footer p{
+  margin:0;
+  color:var(--mist);
+  font-size:.85rem;
+}
+footer a{
+  color:var(--cyan);
+  text-decoration:none;
+}
+footer a:hover{text-decoration:underline}
+
+.empty{
+  color:var(--mist);
+  text-align:center;
+  padding:3rem 1rem;
+  grid-column:1/-1;
+}
 </style></head><body>
-<h1>BT Image galéria</h1>
-<div class="post"><img src="images/18105769052225660.jpg" alt=""><p></p><a href="https://www.instagram.com/p/DdOOinhoLcC/">Megnézem Instagramon</a></div>
-<div class="post"><img src="images/18047675939390093.jpg" alt=""><p>#singapore🇸🇬 #rooftopbar #marinabay #marinabaysands #nightvibes #landscape_lover #landscape_photography #city #asiatravel #asiatrip</p><a href="https://www.instagram.com/p/DQoRPlNiMst/">Megnézem Instagramon</a></div>
-<div class="post"><img src="images/18045913946375214.jpg" alt=""><p>#night #nightphotography #europe #hungary #keszthely #fireworks #moment #blue #nationalholiday</p><a href="https://www.instagram.com/p/DPOsnL2iH9v/">Megnézem Instagramon</a></div>
-<div class="post"><img src="images/17882799594383909.jpg" alt=""><p>#photo #nigthphotography #landscape #europe #hungary #budapest #szabadsághíd #bridge #freedombridge #river #danube #pest #buda</p><a href="https://www.instagram.com/p/DPOsT3WiPFZ/">Megnézem Instagramon</a></div>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="mark"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="4"></circle><path d="M4 8h3l2-2h6l2 2h3v11H4z"></path></svg></span>
+      <span class="brand-name">BT<span class="accent">Image</span></span>
+    </div>
+    <h1>Fotógaléria</h1>
+    <p class="tagline">Pillanatok Instagramról — automatikusan frissülő válogatás.</p>
+  </header>
+
+  <main>
+    <div id="gallery" class="grid"></div>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Bódis Tamás · <a href="https://btimpl.eu">btimpl.eu</a></p>
+  </footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+function formatCaption(caption) {
+  return escapeHtml(caption).replace(/(#[\p{L}0-9_]+)/gu, '<span class="tag">$1</span>');
+}
+
+const igIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.64.42 1.37.47 2.43C21.99 8.94 22 9.28 22 12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.64.25-1.37.42-2.43.47C15.06 21.99 14.72 22 12 22s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77a4.9 4.9 0 0 1 1.77-1.15c.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 1.8c-2.67 0-2.99.01-4.04.06-.87.04-1.34.18-1.65.3-.42.16-.71.35-1.02.66-.31.31-.5.6-.66 1.02-.12.31-.26.78-.3 1.65C4.28 6.14 4.27 6.46 4.27 9.13v1.74c0 2.67.01 2.99.06 4.04.04.87.18 1.34.3 1.65.16.42.35.71.66 1.02.31.31.6.5 1.02.66.31.12.78.26 1.65.3 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.87-.04 1.34-.18 1.65-.3.42-.16.71-.35 1.02-.66.31-.31.5-.6.66-1.02.12-.31.26-.78.3-1.65.05-1.05.06-1.37.06-4.04V9.13c0-2.67-.01-2.99-.06-4.04-.04-.87-.18-1.34-.3-1.65a2.75 2.75 0 0 0-.66-1.02 2.75 2.75 0 0 0-1.02-.66c-.31-.12-.78-.26-1.65-.3-1.05-.05-1.37-.06-4.04-.06zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm5.2-2.4a1.17 1.17 0 1 1 0 2.34 1.17 1.17 0 0 1 0-2.34z"/></svg>';
+
+fetch('data/gallery.json')
+  .then(response => response.json())
+  .then(posts => {
+    const gallery = document.getElementById('gallery');
+
+    if (!posts.length) {
+      gallery.innerHTML = '<p class="empty">Még nincs poszt a galériában.</p>';
+      return;
+    }
+
+    posts
+      .slice()
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .forEach(post => {
+        const card = document.createElement('article');
+        card.className = 'card';
+
+        const date = new Date(post.timestamp);
+        const dateLabel = isNaN(date) ? '' : date.toLocaleDateString('hu-HU', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        card.innerHTML = `
+          <div class="thumb"><img src="${post.image}" alt="${escapeHtml(post.caption).slice(0, 120) || 'BT Image fotó'}" loading="lazy"></div>
+          <div class="card-body">
+            ${post.caption ? `<p class="caption">${formatCaption(post.caption)}</p>` : ''}
+            <div class="card-footer">
+              <time datetime="${post.timestamp}">${dateLabel}</time>
+              <a class="ig-link" href="${post.permalink}" target="_blank" rel="noopener">${igIcon} Instagram</a>
+            </div>
+          </div>
+        `;
+
+        gallery.appendChild(card);
+      });
+  });
+</script>
 </body></html>
